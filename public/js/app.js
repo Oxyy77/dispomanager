@@ -1,6 +1,33 @@
-new TypeIt("#myElement", {
-    strings: ["Selamat Datang di", "DispoManager."],
-}).go();
+let i = 0;
+let text = "Selamat Datang di, DispoManager";
+let speed = 100;
+
+function typeWriter() {
+    let demoElement = document.getElementById("myElement");
+
+    if (i < text.length) {
+        demoElement.innerHTML += text.charAt(i);
+        i++;
+        setTimeout(typeWriter, speed);
+    } else {
+      
+        setTimeout(function() {
+            for (let j = text.length; j >= 0; j--) {
+                setTimeout(function() {
+                    demoElement.innerHTML = text.substring(0, j);
+                }, speed * (text.length - j));
+            }
+
+            setTimeout(function() {
+                i = 0;
+                typeWriter();
+            }, speed * (text.length + 1));
+        }, 1000); 
+    }
+}
+
+typeWriter();
+
 
 
 function toggleActive(userType) {
@@ -8,15 +35,12 @@ function toggleActive(userType) {
     var clickedElement = document.querySelector(`#menuList li[data-user="${userType}"]`);
     var activeElement = document.querySelector('#menuList li.active');
 
-    // Hapus kelas 'active' dari elemen yang memiliki kelas 'active' sebelumnya
     if (activeElement !== null) {
         activeElement.classList.remove('active');
     }
 
-    // Tambahkan kelas 'active' pada elemen yang diklik
     clickedElement.classList.add('active');
 
-    // Ganti URL sesuai dengan data-url pada elemen yang diklik
     var userUrl = clickedElement.getAttribute('data-url');
     window.location.href = userUrl;
 

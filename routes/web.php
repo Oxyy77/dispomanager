@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -21,4 +22,7 @@ Route::get('/', function () {
 
 
 Route::get('/login/{userType}', [LoginController::class, 'showLoginForm'])->name('login');
+
+
+
 

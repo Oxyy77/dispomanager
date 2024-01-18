@@ -3,7 +3,7 @@
        <section id="welcomePage">
         <div class="row">
             <div class="col-md-6 welcome-text">
-                <h1 id="myElement"></h1>
+                <h1 [typeit loop="true"] id="myElement"></h1>
                 <p class="pt-3" >Mengoptimalkan Alur Surat dengan <br> Solusi Disposisi Terbaik.</p>
             </div>
             <div class="col-md-6 d-flex justify-content-end welcome-img">
