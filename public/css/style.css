@@ -100,6 +100,24 @@ body {
     color: #003249;  
 }
 
+.btn-second{
+  background: #fff!important;
+  color: #003249;
+  font-size: 10px;
+  font-weight: 700;
+  width: 75px;
+  height: 25px;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.btn-logout{
+  background: none;
+  color: #fff;
+  font-weight: 600;
+  font-size: 14px;
+}
+
 /* login */
 
 .sidebar-login{
@@ -113,6 +131,8 @@ body {
     position: relative;
     background: linear-gradient(180deg, #007EA7 1.06%, rgba(0, 126, 167, 0.00) 140.25%);
     box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    position: fixed;
+    overflow: hidden;
 }
 
 ul {
@@ -197,7 +217,211 @@ li {
     color: #003249;
   }
 
- 
+  .icon-password{
+    position: absolute;
+  }
+
+  /* sidebar */
+
+  .sidebar {
+    height: 100vh!important;
+    background: linear-gradient(172deg, #007EA7 0%, rgba(0, 126, 167, 0.00) 300.77%);
+    box-shadow: 4px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  }
+
+  .sidebar-header{
+    color: #003249;
+    font-size: 20px;
+    font-weight: 700;
+  }
+
+  .nav-pills {
+    margin-bottom: 100px;
+  }
+
+  .nav-link {
+    color: #FFF;
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  .nav-link img {
+    padding-right: 20px;
+    width: 36px;
+  }
+
+  .nav-pills .nav-link.active, .nav-pills .show>.nav-link {
+    background: linear-gradient(90deg, #003249 0%, rgba(0, 50, 73, 0.00) 120.04%)!important;
+}
+
+.nav-item {
+    width: 100%;
+}
+
+/* dashboard */
+
+.dashboard-header{
+    color: #003249;
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.card-dashboard{
+    width: 30%!important;
+   
+}
+
+.circle{
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    background: linear-gradient(136deg, #007EA7 13.75%, rgba(0, 126, 167, 0.00) 110.21%);
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.25);
+    position: relative;
+}
+
+.circle p{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    color: #fff;
+    color: #FFF;
+    text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    font-size: 32px;
+    font-weight: 600;
+}
+
+.card-urgent {
+    border-radius: 16px;
+    background: linear-gradient(105deg, #007EA7 0.08%, rgba(0, 126, 167, 0.00) 90.17%);
+    box-shadow: 4px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    border-left: 5px solid #003249;
+}
+
+.card:not(.card-urgent) {
+    border-radius: 16px;
+    background: #CCDBDC ;
+    box-shadow: 4px 4px 4px 0px rgba(0, 0, 0, 0.1); 
+    border-left: 5px solid #003249;
+}
+
+.card-message {
+    color: #003249;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.card-message br::after {
+    content: ' Minggu Ini';
+    font-weight: 400;
+    color: #003249; 
+    font-size: 12px;
+}
+
+
+.card-alert{
+    color: #003249;
+    font-size: 10px;
+    font-weight: 500;
+    line-height: normal;
+    display: flex;
+    justify-content: center;
+    margin-top: 0.5rem;
+}
+
+/* table */
+
+.kategori-table {
+    color: #003249;
+    font-size: 14px;
+}
+
+.kategori-table .active {
+    font-weight: 700;
+    border-bottom: 2px solid #003249;
+}
+
+.hidden {
+    display: none;
+}
+
+.table th {
+    color: #003249;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.table td {
+    color: #003249;
+    font-size: 16px;
+    font-weight: 400;
+}
+
+tbody, td, tfoot, th, thead {
+    border-color: inherit;
+    border-style: none;
+    border-width: 0;
+}
+
+table {
+    border-collapse: collapse;
+    border-radius: 1em;
+    overflow: hidden;
+  }
+
+  /* kelola surat */
+
+  .kelola-tambah{
+    color: #003249;
+    font-size: 16px;
+    font-weight: 600;
+  }
+
+  .button-tambah .btn-first {
+    width: 90px;
+  }
+
+  .button-tambah .btn-first:hover{
+    background: #003249!important;
+    color: #FFF;
+  }
+
+  .tanda-tangan{
+    background-color: #CCDBDC;
+    color: #003249;
+    font-size: 16px;
+    font-weight: 700;
+    box-shadow: 4px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  }
+
+  .tanda-tangan .card {
+    border-left: none;
+    border-radius: 10px;
+    background: linear-gradient(92deg, #9AD1D4 0.16%, rgba(154, 209, 212, 0.00) 136.44%);
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  }
+    .judul-surat {
+    color: #003249;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: normal;
+    }
+
+    .no-surat {
+        font-size: 12px;
+        font-weight: 400;
+    }
+
+    .button-group .btn-first {
+        width: 80px;
+    }
+
+    .button-submit{
+        display: flex;
+    }
+
+
 
   
   

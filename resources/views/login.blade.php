@@ -35,19 +35,36 @@
                 <div class="row login-heading mt-5 d-flex justify-content-center">
                     Masuk
                 </div>
+
+                @if(session()->has('loginError'))
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    {{ session('loginError') }}
+                    <button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="close"></button>
+                </div>
+                 @endif
+
                 <div class="row login-tagline mt-3 d-flex justify-content-center">
                     Ayo masuk untuk melakukan akses
                        <br> disposisi surat.
                 </div>
+                <form action="/login" method="post">
+                    @csrf
                 <div class="row mb-5 d-flex login-form justify-content-center">
-                    <label style="padding-left: 12px!important;" for="uname">Username</label>
-                    <input class="mb-3" type="text"  name="uname" required>
-                    <label style="padding-left: 12px!important;" for="psw">Password</label>
-                   <input type="password" name="psw" id="">
+                    <label style="padding-left: 12px!important;" for="email">Email</label>
+                    <input class="mb-3" type="email" id="email"  name="email" required>
+                    <label style="padding-left: 12px!important;" for="password">Password</label>
+                   <input type="password" name="password" id="password" required>
+                   <img style="width: 24px" id="eyeicon" class="icon-password" src="{{asset('img/eye-slash.svg')}}" alt="">
                 </div>
+               
                 <div class="row d-flex justify-content-center">
-                    <button type="button" class="btn-first">Masuk</button>
+                    <button type="submit" class="btn-first">Masuk</button>
                 </div>
+               
+            </form>
+
+          
+            
             </div>
     </div>
 </div>

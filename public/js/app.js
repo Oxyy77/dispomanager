@@ -41,6 +41,7 @@ function toggleActive(userType) {
 
     clickedElement.classList.add('active');
 
+  
     var userUrl = clickedElement.getAttribute('data-url');
     window.location.href = userUrl;
 
@@ -49,4 +50,52 @@ function toggleActive(userType) {
     userImage.src = imagePath;
 }
 
+function pilihKategori(elem) {
+    // Menghapus kelas 'active' dari semua elemen kategori
+    document.querySelectorAll('#kategori li').forEach(function (el) {
+        el.classList.remove('active');
+    });
+
+    // Menambahkan kelas 'active' pada elemen kategori yang dipilih
+    elem.classList.add('active');
+
+    // Mendapatkan nilai teks dari elemen kategori yang dipilih
+    var kategori = elem.innerText;
+
+    // Menampilkan atau menyembunyikan tabel berdasarkan kategori
+    tampilkanTabel(kategori);
+}
+
+function tampilkanTabel(kategori) {
+    // Menyembunyikan semua tabel
+    document.querySelectorAll('table').forEach(function (tabel) {
+        tabel.classList.add('hidden');
+    });
+
+    // Menampilkan tabel yang sesuai dengan kategori
+    if (kategori === 'Semua') {
+        document.getElementById('tabelSemua').classList.remove('hidden');
+    } else if (kategori === 'Surat Masuk') {
+        document.getElementById('tabelMasuk').classList.remove('hidden');
+    } 
+    else if (kategori === 'Surat Keluar') {
+        document.getElementById('tabelKeluar').classList.remove('hidden');
+    }
+}
+
+function confirmLogout() {
+    Swal.fire({
+        title: 'Konfirmasi',
+        text: 'Anda yakin ingin keluar?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Ya, Keluar!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            document.getElementById('logout-form').submit();
+        }
+    });
+}
   
