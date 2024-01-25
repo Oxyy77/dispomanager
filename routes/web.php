@@ -1,13 +1,19 @@
 <?php
 
+use App\Models\Pengiriman;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\KurirController;
+use App\Http\Controllers\SekrePengajuan;
 use App\Http\Controllers\LoginController;
-use App\Http\Controllers\DirekturController;
+use App\Http\Controllers\SuratController;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\SekretarisController;
-
-
+use App\Http\Controllers\PengirimanController;
+use App\Http\Controllers\SuratSekreController;
+use App\Http\Controllers\Kurir\KurirController;
+use App\Http\Controllers\SekreFormatController;
+use App\Http\Controllers\Direktur\DirekturController;
+use App\Http\Controllers\Direktur\FormatSuratController;
+use App\Http\Controllers\Direktur\TambahFormatController;
+use App\Http\Controllers\Sekretaris\SekretarisController;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,84 +33,83 @@ Route::get('/', function () {
 Route::get('/login/{userType}', [LoginController::class, 'showLoginForm'])->name('login')->middleware('guest');
 Route::post('/login', [LoginController::class, 'authenticate']);
 Route::post('/logout', [LoginController::class, 'logout'])->middleware('auth');
-Route::get('/dashboard/kurir', [KurirController::class, 'index'])->name('dashboard.kurir')->middleware('auth');
+Route::post('/get-format-options', [SuratController::class, 'getFormatOptions']);
+Route::patch('/update-status/{id}', [DirekturController::class, 'edit'])->name('update-status');
 
 
-// route direktur
-Route::get('/dashboard/direktur', [DirekturController::class, 'index'])->name('dashboard.direktur')->middleware('auth');
-// route frontend
-Route::get('/kelola-direktur', function () {
-    return view('direktur.kelola');
-})->middleware('auth');
 
-Route::get('/tambah-surat', function () {
+Route::middleware(['checkUserRole:direktur'])->group(function(){
+    Route::get('/dashboard/direktur', [DirekturController::class, 'index'])->name('dashboard.direktur');
+    Route::get('/kelola-direktur', [DirekturController::class, 'kelola']);
+
+    Route::get('/tambah-surat', function () {
     return view('direktur.tambah-surat');
-})->middleware('auth');
+    });
 
-Route::get('/format-surat', function () {
-    return view('direktur.format-surat');
-})->middleware('auth');
+    Route::get('/format-surat', [FormatSuratController::class, 'index']);
 
-Route::get('/tambah-format', function () {
-    return view('direktur.tambah-format');
-})->middleware('auth');
+    Route::get('/tambah-format', function () {
+        return view('direktur.tambah-format');
+    });
 
-Route::get('/surat-masuk', function () {
-    return view('direktur.surat-masuk');
-})->middleware('auth');
+    Route::get('/surat-masuk', [DirekturController::class, 'suratMasuk']);
 
-Route::get('/baca-surat', function () {
-    return view('direktur.baca-surat');
-})->middleware('auth');
+    Route::get('/baca-surat', function () {
+        return view('direktur.baca-surat');
+    });
 
-Route::get('/data-surat', function () {
-    return view('direktur.data');
-})->middleware('auth');
+    Route::get('/data-surat', [DirekturController::class, 'semuaSurat'] );
+ 
 
-// route sekretaris
-Route::get('/dashboard/sekretaris', [SekretarisController::class, 'index'])->name('dashboard.sekretaris')->middleware('auth');
-// route frontend
-Route::get('/kelola-sekretaris', function () {
-    return view('sekretaris.kelola');
-})->middleware('auth');
+    Route::resource('/format-surat/tambah', TambahFormatController::class);
+    Route::resource('/tambah-surat/tambah', SuratController::class);
+    Route::patch('/updateStatus/{id}', [DirekturController::class, 'bacaSurat'])->name('updateSurat');
 
-Route::get('/sekretaris/tambah-surat', function () {
+});
+
+Route::middleware(['checkUserRole:sekretaris'])->group(function(){
+    Route::get('/dashboard/sekretaris', [SekretarisController::class, 'index'])->name('dashboard.sekretaris');
+    Route::get('/kelola-sekretaris', [SekrePengajuan::class, 'index']);
+
+    Route::get('/sekretaris/tambah-surat', function () {
     return view('sekretaris.tambah-surat');
-})->middleware('auth');
+    });
 
-Route::get('/sekretaris/format-surat', function () {
-    return view('sekretaris.format-surat');
-})->middleware('auth');
+    Route::get('sekretaris/format-surat', [SekreFormatController::class, 'index']);
+    Route::resource('/sekretaris/tambah-surat/tambah', SuratSekreController::class);
+    Route::resource('/sekretaris/format-surat/tambah', SekreFormatController::class);
 
-Route::get('/sekretaris/tambah-format', function () {
-    return view('sekretaris.tambah-format');
-})->middleware('auth');
+    Route::get('/sekretaris/tambah-format', function () {
+        return view('sekretaris.tambah-format');
+    });
 
-Route::get('/sekretaris/surat-masuk', function () {
-    return view('sekretaris.surat-masuk');
-})->middleware('auth');
-
-Route::get('/sekretaris/baca-surat', function () {
-    return view('sekretaris.baca-surat');
-})->middleware('auth');
-
-Route::get('/sekretaris/data-surat', function () {
-    return view('sekretaris.data');
-})->middleware('auth');
-
-// route kurir
-Route::get('/dashboard/kurir', [KurirController::class, 'index'])->name('dashboard.kurir')->middleware('auth');
+    Route::get('/sekretaris/surat-masuk', [SekretarisController::class, 'suratMasuk']);
+    Route::patch('/updateSekre/{id}', [SekretarisController::class, 'bacaSurat'])->name('updateSekre');
 
 
+    Route::get('/sekretaris/baca-surat', function () {
+        return view('sekretaris.baca-surat');
+    });
 
-Route::get('/kurir/surat-masuk', function () {
-    return view('kurir.surat-masuk');
-})->middleware('auth');
+    Route::get('/sekretaris/data-surat', [SekretarisController::class, 'semuaSurat']);
+});
 
-Route::get('/kurir/surat-keluar', function () {
-    return view('kurir.surat-keluar');
-})->middleware('auth');
+Route::middleware(['checkUserRole:kurir'])->group(function(){
+    Route::get('/dashboard/kurir', [KurirController::class, 'index'])->name('dashboard.kurir');
+    Route::resource('/kurir/surat-masuk', PengirimanController::class);
 
-Route::get('/kurir/data-surat', function () {
-    return view('kurir.data');
-})->middleware('auth');
+    Route::get('/kurir/surat-keluar', function () {
+        return view('kurir.surat-keluar');
+    });
+
+    Route::get('/kurir/surat-keluar', [KurirController::class, 'suratKeluar']);
+
+    Route::get('/kurir/data-surat', [KurirController::class, 'semuaSurat']);
+
+    Route::put('/kurir/surat-masuk/{id}/kirim', [PengirimanController::class, 'kirim'])->name('pengiriman.kirim');
+    Route::put('/kurir/surat-masuk/{id}/selesai', [PengirimanController::class, 'selesai'])->name('pengiriman.selesai');
+
+    Route::put('/pengiriman/{id}/keluar-kirim', [PengirimanController::class, 'keluarKirim'])->name('pengiriman.kirimKeluar');
+    Route::put('/pengiriman/{id}/keluar-selesai', [PengirimanController::class, 'keluarSelesai'])->name('pengiriman.selesaiKeluar');
+
+});

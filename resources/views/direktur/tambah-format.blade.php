@@ -18,13 +18,31 @@
                 Tambah Format
             </div>
             <div style="margin: 0" class="row d-flex flex-column mb-4 w-100 p-3 tanda-tangan rounded">
-                <label for="exampleFormControlInput1" class="form-label">Kategori Surat</label>
-                <input type="text" class="form-control mb-3" id="exampleFormControlInput1"
-                    placeholder="Masukkaan Kategori Surat">
-                <label for="exampleFormControlInput1" class="form-label">Format Surat</label>
-                <input type="text" class="form-control mb-3" id="exampleFormControlInput1"
-                    placeholder="Masukkaan Format Surat">
-                <button class="btn-first">Tambah</button>
+                <form method="post" action="/format-surat/tambah">
+                    @csrf
+                    <label for="exampleFormControlInput1" class="form-label">Kategori Surat</label>
+                    <input type="text"
+                        class="form-control mb-3 @error('kategori_surat') is-invalid    
+                    @enderror"
+                        name="kategori_surat" id="exampleFormControlInput1" placeholder="Masukkaan Kategori Surat">
+                    @error('kategori_surat')
+                        <div style="font-weight:300" class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                    @enderror
+                    <label for="exampleFormControlInput1" class="form-label">Format Surat</label>
+                    <input type="text"
+                        class="form-control mb-3 @error('format_surat') is-invalid    
+                    @enderror"
+                        name="format_surat" id="exampleFormControlInput1" placeholder="Masukkaan Format Surat">
+                    @error('format_surat')
+                        <div style="font-weight:300" class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                    @enderror
+                    <button type="submit" class="btn-first">Tambah</button>
+                </form>
+               
             </div>
         </div>
     </div>

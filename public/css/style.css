@@ -219,6 +219,8 @@ li {
 
   .icon-password{
     position: absolute;
+    top: 334px;
+    right: 190px;
   }
 
   /* sidebar */
@@ -421,6 +423,13 @@ table {
         display: flex;
     }
 
+
+    
+    
+
+
+
+    
 
 
   

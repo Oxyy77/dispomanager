@@ -43,4 +43,9 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function format()
+    {
+        return $this->belongsToMany(Format::class, 'format_user','user_id','format_id')->withTimestamps();
+    }
 }

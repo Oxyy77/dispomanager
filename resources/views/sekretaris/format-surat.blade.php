@@ -9,6 +9,9 @@
     </style>
 @endsection
 @section('container')
+<!-- Contoh pada tampilan Blade -->
+
+
     <div class="row">
         <div class="col-md-2">
           @include('partials.sekretaris.sidebar')
@@ -17,39 +20,36 @@
             <div style="margin: 0" class="row mb-4 dashboard-header">
                 Format Surat
             </div>
-            <button style="width: 100px" class="btn-first mb-4">Tambah Format</button>
+            <a href="/sekretaris/tambah-format"> <button style="width: 100px" class="btn-first mb-4">Tambah Format</button></a>
             <div style="margin: 0" class="row d-flex flex-column mb-4 w-100 p-3 tanda-tangan rounded">
                 <table id="tabelSemua" class="table table-secondary">
                     <thead>
-                      <tr>
-                        <th scope="col">No</th>
-                        <th scope="col">Format Surat</th>
-                        <th scope="col">Kategori Surat</th>
-                        <th scope="col">Aksi</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr class="table-primary" >
-                        <th scope="row">1</th>
-                        <td>001/pam-techno/U</td>
-                        <td>Undangan Rapat</td>
-                        <td><button style="color: #36CE29" class="btn-first">Edit</button><button style="color: #BE2E40" class="btn-second ms-2">Delete</button></td>
-                      </tr>
-                      <tr class="table-secondary" >
-                        <th scope="row">2</th>
-                        <td>001/pam-techno/U</td>
-                        <td>Undangan Rapat</td>
-                       <td><button style="color: #36CE29" class="btn-first">Edit</button><button style="color: #BE2E40" class="btn-second ms-2">Delete</button></td>
-                      </tr>
-                      <tr class="table-primary" >
-                        <th scope="row">3</th>
-                        <td>001/pam-techno/U</td>
-                        <td>Undangan Rapat</td>
-                       <td><button style="color: #36CE29" class="btn-first">Edit</button><button style="color: #BE2E40" class="btn-second ms-2">Delete</button></td>
-                      </tr>
+                        <tr>
+                            <th scope="col">No</th>
+                            <th scope="col">Format Surat</th>
+                            <th scope="col">Kategori Surat</th>
+                            <th scope="col">Aksi</th>
+                        </tr>
+                        <tbody>
+                      @foreach ($format as $item)
+                            <tr class="table-primary">
+                                <th scope="row">{{ $loop->iteration }}</th>
+                                <td>{{ $item->format_surat }}</td>
+                                <td>{{ $item->kategori_surat }}</td>
+                                <td>
+                                    <a href="/sekretaris/format-surat/tambah/{{$item->id}}/edit"><button style="color: #36CE29" class="btn-first">Edit</button></a>
+                                    <form id="deleteForm-{{ $item->id }}" action="/sekretaris/format-surat/tambah/{{ $item->id }}" method="post">
+                                        @method('delete')
+                                        @csrf
+                                        <button onclick="deleteConfirm('deleteForm-{{ $item->id }}')" type="button" style="color: #BE2E40" class="btn-second ms-2">Delete</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        @endforeach
                     </tbody>
                   </table>
             </div>
+            {{$format->links()}}
         </div>
     </div>
 @endsection

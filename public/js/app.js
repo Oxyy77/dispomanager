@@ -98,4 +98,44 @@ function confirmLogout() {
         }
     });
 }
+
+function deleteConfirm(deleteForm) {
+    var formElement = document.getElementById(deleteForm);
+
+    if (formElement) {
+        Swal.fire({
+            title: 'Konfirmasi',
+            text: 'Anda yakin ingin Menghapus?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya, Hapus!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                formElement.submit();
+            }
+        });
+    } else {
+        console.error('Elemen formulir tidak ditemukan dengan ID: ' + deleteForm);
+    }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    let eyeicon = document.getElementById("eyeicon");
+    let password = document.getElementById("password");
+
+    eyeicon.onclick = function() {
+        if (password.type === "password") {
+            password.type = "text";
+            eyeicon.src = "img/eye.svg";
+        } else {
+            password.type = "password";
+            eyeicon.src = "img/eye-slash.svg";
+        }
+    };
+});
+
+
+
   

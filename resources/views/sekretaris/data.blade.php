@@ -11,7 +11,7 @@
 @section('container')
     <div class="row">
         <div class="col-md-2">
-          @include('partials.sekretaris.sidebar')
+            @include('partials.sekretaris.sidebar')
         </div>
         <div style="padding:3rem!important;" class="col-md-10">
             <div style="margin: 0" class="row mb-4 dashboard-header">
@@ -25,88 +25,77 @@
                 </ul>
             </div>
             <div style="margin: 0" class="row d-flex flex-column mb-4 w-100 p-3 tanda-tangan rounded">
-                <table id="tabelSemua" class="table table-secondary">
-                    <thead>
-                      <tr>
-                        <th scope="col">No</th>
-                        <th scope="col">Nomor Surat</th>
-                        <th scope="col">Nama Surat</th>
-                        <th scope="col">Jenis Surat</th>
-                        <th scope="col">Status</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr class="table-primary" >
-                        <th scope="row">1</th>
-                        <td>001/pam-techno/U/12</td>
-                        <td>Undangan Rapat</td>
-                        <td>Surat Masuk</td>
-                        <td>Surat Masuk</td>
-                      </tr>
-                      <tr class="table-secondary" >
-                        <th scope="row">2</th>
-                        <td>001/pam-techno/U/12</td>
-                        <td>Undangan Rapat</td>
-                        <td>Surat Masuk</td>
-                        <td>Surat Masuk</td>
-                      </tr>
-                      <tr class="table-primary" >
-                        <th scope="row">3</th>
-                        <td>001/pam-techno/U/12</td>
-                        <td>Undangan Rapat</td>
-                        <td>Surat Masuk</td>
-                        <td>Surat Masuk</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                  <table id="tabelMasuk" class="table hidden">
-                    <thead>
-                      <tr>
-                        <th scope="col">No</th>
-                        <th scope="col">Nomor Surat</th>
-                        <th scope="col">Nama Surat</th>
-                        <th scope="col">Jenis Surat</th>
-                        <th scope="col">Status</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <th scope="row">1</th>
-                        <td>001/pam-techno/U/12</td>
-                        <td>Undangan Rapat</td>
-                        <td>Surat Masuk</td>
-                        <td>Surat Masuk</td>
-                      </tr>
-                      <tr>
-                        <th scope="row">2</th>
-                        <td>001/pam-techno/U/12</td>
-                        <td>Undangan Rapat</td>
-                        <td>Surat Masuk</td>
-                        <td>Surat Masuk</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                  <table id="tabelKeluar" class="table hidden">
-                    <thead>
-                      <tr>
-                        <th scope="col">No</th>
-                        <th scope="col">Nomor Surat</th>
-                        <th scope="col">Nama Surat</th>
-                        <th scope="col">Jenis Surat</th>
-                        <th scope="col">Status</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <th scope="row">1</th>
-                        <td>001/pam-techno/U/12</td>
-                        <td>Undangan Rapat</td>
-                        <td>Surat Masuk</td>
-                        <td>Surat Masuk</td>
-                      </tr>
-                    </tbody>
-                  </table>
+              <table id="tabelSemua" class="table table-secondary">
+                <thead>
+                  <tr>
+                    <th scope="col">No</th>
+                    <th scope="col">Nomor Surat</th>
+                    <th scope="col">Nama Surat</th>
+                    <th scope="col">Jenis Surat</th>
+                    <th scope="col">Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @foreach ($semuaSurat as $semua )
+                  <tr class="table-primary" >
+                    <th scope="row"> {{$loop->iteration}} </th>
+                    <td> {{$semua->no_surat}} </td>
+                    <td> {{$semua->nama_surat}} </td>
+                    <td>  {{$semua->jenis_surat}}  </td>
+                    <td> {{$semua->status_surat}} </td>
+                  </tr>
+                  @endforeach
+                </tbody>
+              </table>
+
+
+              <table id="tabelMasuk" class="table hidden">
+                <thead>
+                  <tr>
+                    <th scope="col">No</th>
+                    <th scope="col">Nomor Surat</th>
+                    <th scope="col">Nama Surat</th>
+                    <th scope="col">Jenis Surat</th>
+                    <th scope="col">Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @foreach ($suratMasuk as $masuk )
+                  <tr>
+                    <th scope="row"> {{$loop->iteration}} </th>
+                    <td> {{$masuk->no_surat}} </td>
+                    <td> {{$masuk->nama_surat}} </td>
+                    <td> {{$masuk->jenis_surat}} </td>
+                    <td> {{$masuk->status_surat}} </td>
+                  </tr>
+                  @endforeach
+                </tbody>
+              </table>
+              <table id="tabelKeluar" class="table hidden">
+                <thead>
+                  <tr>
+                    <th scope="col">No</th>
+                    <th scope="col">Nomor Surat</th>
+                    <th scope="col">Nama Surat</th>
+                    <th scope="col">Jenis Surat</th>
+                    <th scope="col">Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                    @foreach ($suratKeluar as $keluar )
+                    <tr>
+                      <th scope="row"> {{$loop->iteration}} </th>
+                      <td> {{$keluar->no_surat}} </td>
+                      <td> {{$keluar->nama_surat}} </td>
+                      <td> {{$keluar->jenis_surat}} </td>
+                      <td> {{$keluar->status_surat}} </td>
+                    </tr>
+                    @endforeach
+                </tbody>
+              </table>
             </div>
+
+            {{$semuaSurat->links()}}
         </div>
     </div>
 @endsection

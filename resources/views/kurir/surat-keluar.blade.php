@@ -15,7 +15,7 @@
         </div>
         <div style="padding:3rem!important;" class="col-md-10">
             <div style="margin: 0" class="row mb-4 dashboard-header">
-                Surat Masuk
+                Surat Keluar
             </div>
             
             <div style="margin: 0" class="row d-flex flex-column mb-4 w-100 p-3 tanda-tangan rounded">
@@ -30,30 +30,31 @@
                       </tr>
                     </thead>
                     <tbody>
+                      @foreach ($suratKeluar as $item )
                       <tr class="table-primary" >
-                        <th scope="row">1</th>
-                        <td>001/pam-techno/U</td>
-                        <td>Undangan Rapat</td>
-                        <td>Belum Dikirim</td>
-                        <td><button class="btn-first">Edit</button></td>
+                        <th scope="row">{{ $loop->iteration }}</th>
+                        <td>{{ $item->no_surat }}</td>
+                        <td> {{$item->nama_surat}} </td>
+                        <td>{{ $item->status_pengiriman }}</td>
+                        <td>
+                          <form action="{{ route('pengiriman.kirimKeluar', $item->id) }}" method="post">
+                              @csrf
+                              @method('put')
+                              <button type="submit" class="btn-first">Kirim</button>
+                          </form>
+          
+                          <form action="{{ route('pengiriman.selesaiKeluar', $item->id) }}" method="post">
+                              @csrf
+                              @method('put')
+                              <button type="submit" class="btn-second">Selesai</button>
+                          </form>
+                      </td>
                       </tr>
-                      <tr class="table-secondary" >
-                        <th scope="row">2</th>
-                        <td>001/pam-techno/U</td>
-                        <td>Undangan Rapat</td>
-                       <td>Belum Dikirim</td>
-                       <td><button class="btn-first">Edit</button></td>
-                      </tr>
-                      <tr class="table-primary" >
-                        <th scope="row">3</th>
-                        <td>001/pam-techno/U</td>
-                        <td>Undangan Rapat</td>
-                       <td>Belum Dikirim</td>
-                       <td><button class="btn-first">Edit</button></td>
-                      </tr>
+                      @endforeach
                     </tbody>
                   </table>
             </div>
+            {{$suratKeluar->links()}}
         </div>
     </div>
 @endsection

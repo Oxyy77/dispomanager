@@ -26,7 +26,7 @@
                         <div class="row">
                             <div class="col-md-4">
                                 <div class="circle">
-                                    <p>12</p>
+                                    <p>{{$pengajuan}}</p>
                                 </div>
                             </div>
                             <div class="col-md-6 card-message d-flex align-items-center">
@@ -46,7 +46,7 @@
                         <div class="row">
                             <div class="col-md-4">
                                 <div class="circle">
-                                    <p>20</p>
+                                    <p>{{$jumlahSuratMasuk}}</p>
                                 </div>
                             </div>
                             <div class="col-md-6 card-message d-flex align-items-center">
@@ -66,7 +66,7 @@
                         <div class="row">
                             <div class="col-md-4">
                                 <div class="circle">
-                                    <p>5</p>
+                                    <p>{{$jumlahSuratKeluar}}</p>
                                 </div>
                             </div>
                             <div class="col-md-6 card-message d-flex align-items-center">
@@ -100,27 +100,15 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr class="table-primary" >
-                    <th scope="row">1</th>
-                    <td>001/pam-techno/U/12</td>
-                    <td>Undangan Rapat</td>
-                    <td>Surat Masuk</td>
-                    <td>Surat Masuk</td>
+                 @foreach ($semuaSurat as $semua)
+                 <tr class="table-primary" >
+                    <th scope="row">{{$loop->iteration}}</th>
+                    <td>{{$semua->no_surat}}</td>
+                    <td>{{$semua->nama_surat}}</td>
+                    <td>{{$semua->jenis_surat}}</td>
+                    <td>{{$semua->status_surat}}</td>
                   </tr>
-                  <tr class="table-secondary" >
-                    <th scope="row">2</th>
-                    <td>001/pam-techno/U/12</td>
-                    <td>Undangan Rapat</td>
-                    <td>Surat Masuk</td>
-                    <td>Surat Masuk</td>
-                  </tr>
-                  <tr class="table-primary" >
-                    <th scope="row">3</th>
-                    <td>001/pam-techno/U/12</td>
-                    <td>Undangan Rapat</td>
-                    <td>Surat Masuk</td>
-                    <td>Surat Masuk</td>
-                  </tr>
+                 @endforeach
                 </tbody>
               </table>
               <table id="tabelMasuk" class="table hidden">
@@ -134,20 +122,16 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <th scope="row">1</th>
-                    <td>001/pam-techno/U/12</td>
-                    <td>Undangan Rapat</td>
-                    <td>Surat Masuk</td>
-                    <td>Surat Masuk</td>
-                  </tr>
-                  <tr>
-                    <th scope="row">2</th>
-                    <td>001/pam-techno/U/12</td>
-                    <td>Undangan Rapat</td>
-                    <td>Surat Masuk</td>
-                    <td>Surat Masuk</td>
-                  </tr>
+                    @foreach ($suratMasuk as $masuk)
+                    <tr class="table-primary" >
+                       <th scope="row">{{$loop->iteration}}</th>
+                       <td>{{$masuk->no_surat}}</td>
+                       <td>{{$masuk->nama_surat}}</td>
+                       <td>{{$masuk->jenis_surat}}</td>
+                       <td>{{$masuk->status_surat}}</td>
+                     </tr>
+                    @endforeach
+                  
                 </tbody>
               </table>
               <table id="tabelKeluar" class="table hidden">
@@ -161,13 +145,16 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <th scope="row">1</th>
-                    <td>001/pam-techno/U/12</td>
-                    <td>Undangan Rapat</td>
-                    <td>Surat Masuk</td>
-                    <td>Surat Masuk</td>
-                  </tr>
+                    @foreach ($suratKeluar as $keluar)
+                    <tr class="table-primary" >
+                       <th scope="row">{{$loop->iteration}}</th>
+                       <td>{{$keluar->no_surat}}</td>
+                       <td>{{$keluar->nama_surat}}</td>
+                       <td>{{$keluar->jenis_surat}}</td>
+                       <td>{{$keluar->status_surat}}</td>
+                     </tr>
+                    @endforeach
+                  
                 </tbody>
               </table>
         </div>

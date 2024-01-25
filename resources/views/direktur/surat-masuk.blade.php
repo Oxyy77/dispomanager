@@ -30,30 +30,28 @@
                       </tr>
                     </thead>
                     <tbody>
+                      @foreach ($suratMasuk as $surat )
                       <tr class="table-primary" >
-                        <th scope="row">1</th>
-                        <td>001/pam-techno/U</td>
-                        <td>Undangan Rapat</td>
-                        <td>Belum Dibaca</td>
-                        <td><button class="btn-first">Baca</button></td>
+                        <th scope="row">{{$loop->iteration}}</th>
+                        <td>{{$surat->no_surat}}</td>
+                        <td>{{$surat->nama_surat}}</td>
+                        <td>{{$surat->status_surat}}</td>
+                        <td>
+                          <form method="POST" action="{{ route('updateSurat',['id' => $surat->id]) }}">
+                            @csrf
+                            @method('PATCH')
+                            
+                            <div style="margin:0" class="row justify-content-end align-items-end h-100">
+                                <button type="submit" class="btn-first">Baca</button>
+                            </div>
+                        </form>
+                        </td>
                       </tr>
-                      <tr class="table-secondary" >
-                        <th scope="row">2</th>
-                        <td>001/pam-techno/U</td>
-                        <td>Undangan Rapat</td>
-                       <td>Belum Dibaca</td>
-                       <td><button class="btn-first">Baca</button></td>
-                      </tr>
-                      <tr class="table-primary" >
-                        <th scope="row">3</th>
-                        <td>001/pam-techno/U</td>
-                        <td>Undangan Rapat</td>
-                       <td>Belum Dibaca</td>
-                       <td><button class="btn-first">Baca</button></td>
-                      </tr>
+                      @endforeach
                     </tbody>
                   </table>
             </div>
+            {{$suratMasuk->links()}}
         </div>
     </div>
 @endsection
