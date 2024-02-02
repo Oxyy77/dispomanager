@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('kategori_surat')->nullable();
             $table->string('nama_surat')->nullable();
             $table->string('jenis_surat')->nullable();
+            $table->string('pengirim')->nullable();
             $table->string('status_surat')->nullable();
             $table->string('nama_file')->nullable();
             $table->timestamps();

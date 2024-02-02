@@ -17,9 +17,9 @@
           </a>
       </li>
       <li class="nav-item">
-          <a href="{{ url('/format-surat') }}" class="nav-link{{ Request::is('format-surat') ? ' active' : '' }}">
+          <a href="{{ url('/kode-surat') }}" class="nav-link{{ Request::is('kode-surat') ? ' active' : '' }}">
               <img src="{{ asset('img/ico-format.svg') }}" alt="">
-              Format Surat
+              Kode Surat
           </a>
       </li>
       <li class="nav-item">

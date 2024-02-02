@@ -34,7 +34,7 @@
                 @csrf
         
                 <label for="exampleFormControlInput1" class="form-label">Nama Surat</label>
-                <input name="nama_surat" type="text" class="form-control mb-3" id="exampleFormControlInput1" placeholder="Masukkan Nama Surat">
+                <input name="nama_surat" type="text" class="form-control mb-3" id="exampleFormControlInput1"  value="{{ old('nama_surat') }}" placeholder="Masukkan Nama Surat">
                 @error('nama_surat')
                     <div class="alert alert-danger">{{ $message }}</div>
                 @enderror
@@ -63,7 +63,8 @@
                 @enderror
         
                 <label for="formFile" class="form-label">Upload Surat</label>
-                <input name="nama_file" class="form-control mb-3" type="file" id="formFile">
+                <input name="nama_file" class="form-control" type="file" id="formFile">
+                <div style="font-size: 12px; font-weight:300;" class="form-text text-danger" id="basic-addon4">File Type : Pdf | Size : Max 2Mb</div>
                 @error('nama_file')
                     <div class="alert alert-danger">{{ $message }}</div>
                 @enderror

@@ -45,8 +45,12 @@ class DirekturController extends Controller
             
         ]);
 
+        $highestSuratId = Surat::max('id');
+        $suratIdforTtd = $highestSuratId + 1;
+
         Pengiriman::create([
             'user_id' => $surat->user_id,
+            'surat_id' => $suratIdforTtd,
             'no_surat' => $surat->no_surat,
             'nama_surat' => $surat->nama_surat,
             'jenis_surat' => $surat->jenis_surat,
@@ -65,16 +69,34 @@ class DirekturController extends Controller
         return view('direktur.surat-masuk',compact('suratMasuk'));
     }
 
-    public function bacaSurat($id){
-        $suratMasuk = Surat::findOrFail($id);
+    public function konfirmasi($id)
+    {
+        try {
+            // Temukan surat berdasarkan ID
+            $surat = Surat::find($id);
     
-        if ($suratMasuk) {
-            $suratMasuk->status_surat = 'Dibaca';
-            $suratMasuk->save();
-            return redirect()->back()->with('success', 'Status berhasil diperbarui.');
+            // Ubah status surat menjadi "Surat Diterima Direktur"
+            if ($surat) {
+                $surat->update([
+                    'status_surat' => 'Surat Diterima Direktur',
+                ]);
+
+                $pengiriman = Pengiriman::where('surat_id', $surat->id)->first();
+
+                // Ubah status pengiriman menjadi "Surat Diterima Direktur"
+                if ($pengiriman) {
+                    $pengiriman->update([
+                        'status_pengiriman' => 'Surat Diterima Direktur',
+                    ]);
+                }
+    
+                return redirect('/surat-masuk')->with('success', 'Surat Diterima oleh Direktur');
+            }
+    
+            return redirect('/surat-masuk')->with('error', 'Gagal menemukan surat dengan ID yang diberikan');
+        } catch (\Exception $e) {
+            return redirect('/surat-masuk')->with('error', 'Gagal memproses surat: ' . $e->getMessage());
         }
-    
-        return redirect()->back()->with('error', 'Surat Masuk tidak ditemukan.');
     }
 
 

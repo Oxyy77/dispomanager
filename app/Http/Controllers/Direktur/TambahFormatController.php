@@ -36,28 +36,41 @@ class TambahFormatController extends Controller
      */
     public function store(Request $request)
 {
-   try {
-     $validatedData = $request->validate([
-        'kategori_surat' => 'required|max:255|unique:format',
-        'format_surat' => 'required|unique:format',
-    ]);
+    try {
+        $validatedData = $request->validate([
+            'kategori_surat' => 'required|max:255|unique:format',
+            'format_surat' => 'required|unique:format',
+        ]);
 
-    // Menambahkan user_id berdasarkan pengguna yang saat ini terautentikasi
-   
+        // Mengambil nilai dari formulir
+        $kategoriSurat = $request->input('kategori_surat');
+        $formatSurat = $request->input('format_surat');
+        $additionalInfo = $request->input('hidden_additional_info');
 
-    // Tambahkan format ke basis data
-   $format = Format::create($validatedData);
-   $format->users()->attach(auth()->user()->id);
+        // Menggabungkan nilai format_surat dengan additionalInfo
+        $formatSuratWithAdditionalInfo = $formatSurat . $additionalInfo;
 
-    return redirect('/format-surat')->with('success', 'Format Surat Berhasil Ditambahkan');
-}  catch (ValidationException $e) {
-    $errors = $e->validator->errors()->all();
+        // Menambahkan user_id berdasarkan pengguna yang saat ini terautentikasi
 
-    return redirect('/format-surat')
+        // Tambahkan format ke basis data
+        $format = Format::create([
+            'kategori_surat' => $kategoriSurat,
+            'format_surat' => $formatSuratWithAdditionalInfo,
+        ]);
+
+        $format->users()->attach(auth()->user()->id);
+
+        return redirect('/kode-surat')->with('success', 'Format Surat Berhasil Ditambahkan');
+    } catch (ValidationException $e) {
+        $errors = $e->validator->errors()->all();
+
+        return back()
         ->with('error', implode('<br>', $errors))
         ->withInput();
+    
+    }
 }
-}
+
 
     
 
@@ -99,7 +112,7 @@ class TambahFormatController extends Controller
 
     // Tidak perlu menambahkan user_id pada update
     Format::where('id', $id)->update($validatedData);
-    return redirect('/format-surat')->with('success', 'Format Surat Berhasil DiEdit');
+    return redirect('/kode-surat')->with('success', 'Format Surat Berhasil DiEdit');
 }
 
     
@@ -114,7 +127,7 @@ class TambahFormatController extends Controller
 
         try {
             DB::table('format')->where('id', $id)->delete();
-            return redirect('/format-surat')->with('success', 'Format Surat Berhasil Dihapus');
+            return redirect('/kode-surat')->with('success', 'Format Surat Berhasil Dihapus');
         } catch (\Exception $e) {
             // Menampilkan pesan kesalahan pada log atau mencetaknya untuk di-debug
            $e->getMessage();

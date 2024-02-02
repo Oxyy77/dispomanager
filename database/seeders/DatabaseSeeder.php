@@ -38,30 +38,9 @@ class DatabaseSeeder extends Seeder
             'password'=> bcrypt('12345678')
         ]);
         
-        Format::create([
-            'format_surat' => '001/pt/U',
-            'kategori_surat' => 'Undangan',
-        ]);
+       
 
-        Format::create([
-            'format_surat' => '002/pt/S',
-            'kategori_surat' => 'Sertifikat',
-        ]);
-
-        Format::create([
-            'format_surat' => '003/pt/R',
-            'kategori_surat' => 'Rapat',
-        ]);
-
-        Surat::create([
-            'user_id' => 1,
-            'format_id' => 1,
-            'no_surat' => '001/pt/U/1',
-            'kategori_surat' => 'Undangan',
-            'jenis_surat' => 'Surat Masuk',
-            'status_surat' => 'Sudah Dibaca',
-            'nama_file' => 'ilham.pdf',
-        ]);
+        
         
     }
 }

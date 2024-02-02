@@ -14,11 +14,13 @@ return new class extends Migration
         Schema::create('pengiriman', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id');
+            $table->foreignId('surat_id');
             $table->string('no_surat');
             $table->string('nama_surat')->nullable();
             $table->string('jenis_surat')->nullable();
             $table->string('status_pengiriman')->nullable();
             $table->string('file_surat')->nullable();
+            $table->string('pengirim')->nullable();
             $table->timestamps();
         });
     }

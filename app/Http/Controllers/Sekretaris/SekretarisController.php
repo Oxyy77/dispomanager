@@ -5,8 +5,10 @@ use App\Models\Surat;
 
 
 use App\Models\Pengajuan;
+use App\Models\Pengiriman;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Session;
 
 class SekretarisController extends Controller
 {
@@ -48,4 +50,99 @@ class SekretarisController extends Controller
         return view('sekretaris.data',compact('semuaSurat','suratMasuk','suratKeluar','jumlahSuratMasuk','pengajuan'));
       
     }
+
+    public function updateSekre($id)
+{
+    try {
+        // Temukan surat berdasarkan ID
+        $surat = Surat::with('pengiriman')->find($id);
+
+        
+
+        // Ubah status surat menjadi "Surat Diterima Sekretaris"
+        $surat->update(['status_surat' => 'Surat Diterima Sekretaris']);
+
+        // Juga, ubah status_pengiriman menjadi "Selesai" di Pengiriman
+        $surat->pengiriman->update(['status_pengiriman' => 'Surat Diterima Sekretaris']);
+
+        session([
+            'surat_terima' => [
+                'nama_surat' => $surat->nama_surat,
+                'no_surat' => $surat->no_surat,
+                'pengirim' => $surat->pengirim,
+            ]
+        ]);
+
+        return redirect('/sekretaris/surat-masuk')->with('success', 'Surat Diterima oleh Sekretaris');
+    } catch (\Exception $e) {
+        return redirect('/sekretaris/surat-masuk')->with('error', 'Gagal memproses surat: ' . $e->getMessage());
+    }
+}
+
+public function formkirimSurat(){
+    // Mengakses nilai session yang telah disimpan
+    $dataSurat = session('surat_terima');
+
+    return view('sekretaris.kirim-surat', ['dataSurat' => $dataSurat]);
+}
+
+public function kirimSurat(Request $request)
+{
+    try {
+        // Mendapatkan informasi surat dari sesi
+        $dataSurat = session('surat_terima');
+      
+        // Validasi request
+        $request->validate([
+            'nama_file' => 'required|mimes:pdf,doc,docx,txt|max:2048', // Sesuaikan jenis file yang diizinkan dan maksimal ukuran
+        ]);
+
+        // Simpan file surat di direktori 'public/surat'
+        $fileSurat = $request->file('nama_file');
+        $namaFileSurat = $fileSurat->getClientOriginalName();
+        $fileSurat->storeAs('public/surat masuk', $namaFileSurat);
+// dd($fileSurat);
+        // Update status surat pada tabel pengiriman
+        $pengiriman = Pengiriman::where('nama_surat', $dataSurat['nama_surat'])
+            ->where('no_surat', $dataSurat['no_surat'])
+            ->where('pengirim', $dataSurat['pengirim'])
+            ->first();
+
+            $surat = Surat::where('nama_surat', $dataSurat['nama_surat'])
+            ->where('no_surat', $dataSurat['no_surat'])
+            ->where('pengirim', $dataSurat['pengirim'])
+            ->first();
+          
+        if ($surat) {
+            $surat->update([
+                'nama_file' => $namaFileSurat,
+                'status_surat' => 'Dikirim ke Direktur'
+            ]);
+        }
+
+        if ($pengiriman) {
+            $pengiriman->update([
+                'status_pengiriman' => 'Dikirim ke Direktur',
+            ]);
+        }
+
+        $pengiriman = Pengiriman::where('surat_id', $surat->id)->first();
+
+        // Ubah status pengiriman menjadi "Surat Diterima Direktur"
+        if ($pengiriman) {
+            $pengiriman->update([
+                'status_pengiriman' => 'Surat Diterima Direktur',
+            ]);
+        }
+
+        // Update file surat pada tabel surat
+       
+
+        return redirect('/sekretaris/surat-masuk')->with('success', 'Surat berhasil dikirim ke Direktur');
+    } catch (\Exception $e) {
+        return redirect('/sekretaris/surat-masuk')->with('error', 'Gagal memproses surat: ' . $e->getMessage());
+    }
+}
+
+
 }

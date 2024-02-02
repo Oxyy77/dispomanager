@@ -22,36 +22,39 @@
     @endif
     <div class="row">
         <div class="col-md-2">
-            @include('partials.sekretaris.sidebar')
+            @include('partials.sidebar')
         </div>
         <div style="padding:3rem!important;" class="col-md-10">
             <div style="margin: 0" class="row mb-4 dashboard-header">
-                Tambah Format
+                Tambah Kode
             </div>
             <div style="margin: 0" class="row d-flex flex-column mb-4 w-100 p-3 tanda-tangan rounded">
-                <form method="post" action="/sekretaris/format-surat/tambah">
+                <form method="post" action="/format-surat/tambah">
                     @csrf
-                    <label for="exampleFormControlInput1" class="form-label">Kategori Surat</label>
+                    <label for="exampleFormControlInput" class="form-label">Kategori Surat</label>
                     <input type="text"
-                        class="form-control mb-3 @error('kategori_surat') is-invalid    
-                    @enderror"
-                        name="kategori_surat" id="exampleFormControlInput1" placeholder="Masukkaan Kategori Surat"  value="{{ old('kategori_surat') }}">
+                        class="form-control mb-3 @error('kategori_surat') is-invalid @enderror"
+                        name="kategori_surat" id="exampleFormControlInput" placeholder="Masukkan Kategori Surat"
+                        value="{{ old('kategori_surat') }}">
                     @error('kategori_surat')
                         <div style="font-weight:300" class="invalid-feedback">
                             {{ $message }}
                         </div>
                     @enderror
+                
                     <label for="exampleFormControlInput1" class="form-label">Format Surat</label>
                     <input type="text"
-                        class="form-control mb-3 @error('format_surat') is-invalid    
-                    @enderror"
-                        name="format_surat" id="exampleFormControlInput1" placeholder="Masukkaan Format Surat"  value="{{ old('format_surat') }}">
-                        <input type="hidden" id="hiddenAdditionalInfo" name="hidden_additional_info" value="{{ old('hidden_additional_info') }}">
+                        class="form-control mb-3 @error('format_surat') is-invalid @enderror"
+                        name="format_surat" id="exampleFormControlInput1" placeholder="ex: PT/U"
+                        value="{{ old('format_surat') }}">
+                    <input type="hidden" id="hiddenAdditionalInfo" name="hidden_additional_info" value="{{ old('hidden_additional_info') }}">
+                
                     @error('format_surat')
                         <div style="font-weight:300" class="invalid-feedback">
                             {{ $message }}
                         </div>
                     @enderror
+                
                     <div class="form-check mb-3">
                         <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" name="include_month_year"
                             {{ old('include_month_year') ? 'checked' : '' }}>
@@ -65,8 +68,10 @@
                             Sertakan Bulan dan Tahun Pada Kode Surat
                         </label>
                     </div>
+                
                     <button type="submit" class="btn-first">Tambah</button>
                 </form>
+                
                
             </div>
         </div>
@@ -97,4 +102,7 @@
             });
         });
     </script>
+    
+    
+    
 @endsection

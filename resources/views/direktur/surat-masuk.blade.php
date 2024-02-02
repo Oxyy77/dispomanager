@@ -1,3 +1,4 @@
+
 @extends('layouts.main')
 @section('extra-styles')
     <style>
@@ -25,6 +26,7 @@
                         <th scope="col">No</th>
                         <th scope="col">Nomor Surat</th>
                         <th scope="col">Nama Surat</th>
+                        <th scope="col">Pengirim</th>
                         <th scope="col">Status</th>
                         <th scope="col">Aksi</th>
                       </tr>
@@ -35,16 +37,24 @@
                         <th scope="row">{{$loop->iteration}}</th>
                         <td>{{$surat->no_surat}}</td>
                         <td>{{$surat->nama_surat}}</td>
+                        <td>{{$surat->pengirim}}</td>
                         <td>{{$surat->status_surat}}</td>
                         <td>
-                          <form method="POST" action="{{ route('updateSurat',['id' => $surat->id]) }}">
+                          
+                          <form method="POST" action="{{ route('konfirmasi',['id' => $surat->id]) }}">
                             @csrf
-                            @method('PATCH')
-                            
-                            <div style="margin:0" class="row justify-content-end align-items-end h-100">
-                                <button type="submit" class="btn-first">Baca</button>
-                            </div>
+                            @method('PUT')
+                          @if ($surat->status_surat == 'Dikirim ke Direktur')
+                          <button class="btn-first">Konfirmasi Terima</button>
+                          @elseif ($surat->status_surat != 'Dikirim ke Direktur')
+                          <button class="btn-first" disabled>Konfirmasi Terima</button>
+                          @endif
                         </form>
+                        <div style="margin:0" class="row">
+                         <a href="{{url('/baca-surat', $surat->id)}}">
+                          <button type="submit" class="btn-second">Baca</button>
+                         </a>
+                      </div>
                         </td>
                       </tr>
                       @endforeach

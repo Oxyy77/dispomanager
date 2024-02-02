@@ -8,6 +8,17 @@
     </style>
 @endsection
 @section('container')
+@if(session('error'))
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error!',
+                    html: '{!! session('error') !!}',
+                });
+        });
+    </script>
+    @endif
 <div class="row d-flex flex-row">
     <div class="col-md-2">
         @include('partials.sidebar')
@@ -18,6 +29,7 @@
         </div>
         <div style="margin: 0" class="row justify-content-center gap-4">
             <div class="card-dashboard mb-4">
+               <a class="text-decoration-none" href="/kelola-direktur">
                 <div class="card card-urgent h-100 p-3">
                     <div class="card-body">
                         <div class="row no-gutters align-items-center justify-content-end">
@@ -42,28 +54,33 @@
                         </div>
                     </div>
                 </div>
+               </a>
             </div>
-            <div class="card-dashboard mb-4">
-                <div class="card h-100 p-3">
-                    <div class="card-body">
-                        <div class="row no-gutters align-items-center justify-content-end">
-                            <img class="" style="width: 16px" src="{{asset('img/ico-data-blue.svg')}}" alt="">
-                        </div>
-                        <div class="row">
-                            <div class="col-md-4">
-                                <div class="circle">
-                                    <p>{{  $jumlahSuratMasuk }}</p>
+                <div class="card-dashboard mb-4">
+                    <a class="text-decoration-none" href="/surat-masuk">
+                    <div class="card h-100 p-3">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center justify-content-end">
+                                <img class="" style="width: 16px" src="{{asset('img/ico-data-blue.svg')}}" alt="">
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="circle">
+                                        <p>{{  $jumlahSuratMasuk }}</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 card-message d-flex align-items-center">
+                                    Surat Masuk <br> Minggu Ini
                                 </div>
                             </div>
-                            <div class="col-md-6 card-message d-flex align-items-center">
-                                Surat Masuk <br> Minggu Ini
-                            </div>
+                            <div class="row card-alert">Pergi ke Halaman Data Surat Untuk Membaca</div>
                         </div>
-                        <div class="row card-alert">Pergi ke Halaman Data Surat Untuk Membaca</div>
                     </div>
+                </a>
                 </div>
-            </div>
+          
             <div class="card-dashboard mb-4">
+                <a class="text-decoration-none" href="/data-surat">
                 <div class="card h-100 p-3">
                     <div class="card-body">
                         <div class="row no-gutters align-items-center justify-content-end">
@@ -82,6 +99,7 @@
                         <div class="row card-alert">Pergi ke Halaman Data Surat Untuk Membaca</div>
                     </div>
                 </div>
+                </a>
             </div>
         </div>
         <div style="margin: 0" class="row mb-4 dashboard-header">

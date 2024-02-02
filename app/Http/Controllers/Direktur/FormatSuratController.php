@@ -10,7 +10,7 @@ class FormatSuratController extends Controller
 
  public function index(){
     $format = format::paginate(5);
-    return view('direktur.format-surat', compact('format'));
+    return view('direktur.kode-surat', compact('format'));
  }
 
 

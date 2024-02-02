@@ -6,6 +6,7 @@ use App\Models\Pengajuan;
 use App\Models\Pengiriman;
 use App\Models\Surat;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class PengirimanController extends Controller
 {
@@ -29,29 +30,38 @@ class PengirimanController extends Controller
     /**
      * Store a newly created resource in storage.
      */
+    
+   
+    
     public function store(Request $request)
     {
-        
         $validatedData = $request->validate([
             'no_surat' => 'required|max:255',
             'nama_surat' => 'required|max:255',
-            'file_surat' => 'required|mimes:pdf|max:10240',
+            'pengirim' => 'required|max:255'
         ]);
-        
+    
         $user_id = auth()->id();
         $validatedData['user_id'] = $user_id;
-        // Menambahkan user_id berdasarkan pengguna yang saat ini terautentikasi
-        $uploadedFile = $request->file('file_surat');
-        $fileName = $uploadedFile->storeAs('surat masuk', $uploadedFile->getClientOriginalName(), 'public');
-        $validatedData['status_pengiriman'] = 'Menunggu Dikirim';
-        $validatedData['file_surat'] = $fileName;
+        $validatedData['status_pengiriman'] = 'Menunggu Dikirim'; 
         $validatedData['jenis_surat'] = 'Surat Masuk';
-      
-        // Tambahkan format ke basis data
-        Pengiriman::create($validatedData);
     
-        return redirect('/kurir/surat-masuk')->with('success', 'Format Surat Berhasil Ditambahkan');
+        try {
+            // Ambil nilai terbesar dari kolom 'id' pada tabel 'surat'
+            $maxSuratId = Surat::max('id');
+    
+            // Tambahkan 1 ke nilai tersebut untuk mendapatkan 'surat_id' yang baru
+            $validatedData['surat_id'] = $maxSuratId + 1;
+    
+            // Membuat record baru di tabel 'pengiriman' dengan 'surat_id' yang baru
+            Pengiriman::create($validatedData);
+    
+            return redirect('/kurir/surat-masuk')->with('success', 'Surat Masuk Berhasil Ditambahkan');
+        } catch (\Exception $e) {
+            return redirect('/kurir/surat-masuk')->with('error', 'Gagal menambahkan surat: ' . $e->getMessage());
+        }
     }
+    
 
     public function kirim(string $id)
 {
@@ -62,10 +72,7 @@ class PengirimanController extends Controller
     if ($pengiriman->status_pengiriman != 'Selesai') {
         $pengiriman->update(['status_pengiriman' => 'Dalam Pengiriman']);
         return redirect('/kurir/surat-masuk')->with('success', 'Surat berhasil dikirim.');
-    }
-
-    
-
+    } 
     return redirect('/kurir/surat-masuk')->with('error', 'Surat sudah selesai, tidak dapat dikirim lagi.');
 }
 
@@ -74,13 +81,14 @@ public function selesai(string $id)
     $pengiriman = Pengiriman::findOrFail($id);
 
     if ($pengiriman->status_pengiriman != 'Selesai') {
-        $pengiriman->update(['status_pengiriman' => 'Selesai']);
+        $pengiriman->update(['status_pengiriman' => 'Selesai Dikirim']);
         Surat::create([
             'user_id' => $pengiriman->user_id,
             'no_surat' => $pengiriman->no_surat,
             'nama_surat' => $pengiriman->nama_surat,
             'jenis_surat' => $pengiriman->jenis_surat,
-            'nama_file' => $pengiriman->file_surat
+            'status_surat' => $pengiriman->status_pengiriman,
+            'pengirim' => $pengiriman->pengirim
         ]);
         return redirect('/kurir/surat-masuk')->with('success', 'Surat berhasil diselesaikan.');
     }

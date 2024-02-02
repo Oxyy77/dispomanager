@@ -9,27 +9,16 @@
     </style>
 @endsection
 @section('container')
-@if(session('error'))
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error!',
-                    html: '{!! session('error') !!}',
-                });
-        });
-    </script>
-    @endif
     <div class="row">
         <div class="col-md-2">
-            @include('partials.sidebar')
+            @include('partials.sekretaris.sidebar')
         </div>
         <div style="padding:3rem!important;" class="col-md-10">
             <div style="margin: 0" class="row mb-4 dashboard-header">
                 Kelola Surat
             </div>
             <div style="margin: 0" class="row mb-4 kelola-tambah">
-                Tambah Surat
+                Buat Surat
             </div>
             <div style="margin: 0" class="row d-flex flex-column mb-4 w-100 p-3 tanda-tangan rounded">
                 @if ($errors->any())
@@ -41,47 +30,47 @@
                     </ul>
                 </div>
             @endif
-            <form method="post" action="/tambah-surat/tambah" enctype="multipart/form-data">
+            <form method="post" action="/sekretaris/form/buat-surat" enctype="multipart/form-data">
                 @csrf
-            
+              
                 <label for="exampleFormControlInput1" class="form-label">Nama Surat</label>
-                <input name="nama_surat" type="text" class="form-control mb-3" id="exampleFormControlInput1" placeholder="Masukkan Nama Surat" value="{{ old('nama_surat') }}">
-                @error('nama_surat')
+                <input name="hal" type="text" class="form-control mb-3" id="exampleFormControlInput1"  value="{{ old('hal') }}" placeholder="Masukkan Nama Surat">
+                @error('hal')
                     <div class="alert alert-danger">{{ $message }}</div>
                 @enderror
-            
+        
                 <label for="kategori-surat">Kategori Surat</label>
                 <select name="kategori_surat" id="kategori_surat" class="form-select mb-3" aria-label="Default select example">
                     <option selected>Pilih No Surat</option>
-                    @foreach($KategoriOptions as $kategoriSurat)
-                        <option value="{{ $kategoriSurat }}" {{ old('kategori_surat') == $kategoriSurat ? 'selected' : '' }}>{{ $kategoriSurat }}</option>
-                    @endforeach
+                    @foreach($KategoriOptions as  $kategoriSurat)
+                        <option value="{{ $kategoriSurat }}">{{ $kategoriSurat }}</option>
+                    @endforeach 
                 </select>
                 @error('kategori_surat')
                     <div class="alert alert-danger">{{ $message }}</div>
                 @enderror
-            
+        
                 <label for="no-surat">No Surat</label>
-                <select readonly name="no_surat" id="no_surat" class="form-select mb-3" aria-label="Default select example">
+                <select  name="no_surat" id="no_surat" class="form-select mb-3" aria-label="Default select example">
                     <option selected>Pilih No Surat</option>
                     @foreach($noSuratOptions as $id => $nomorSurat)
-                        <option value="{{ $nomorSurat }}" {{ old('no_surat') == $nomorSurat ? 'selected' : '' }}>{{ $nomorSurat }}</option>
+                        <option value="{{ $nomorSurat }}">{{ $nomorSurat }}</option>
                     @endforeach
                 </select>
+              
                 @error('no_surat')
                     <div class="alert alert-danger">{{ $message }}</div>
                 @enderror
-            
-                <label for="formFile" class="form-label">Upload Surat</label>
-                <input name="nama_file" class="form-control" type="file" id="formFile">
-                <div style="font-size: 12px; font-weight:300;" class="form-text text-danger" id="basic-addon4">File Type : Pdf | Size : Max 2Mb</div>
-                @error('nama_file')
-                    <div class="alert alert-danger">{{ $message }}</div>
-                @enderror
-            
-                <button type="submit" class="btn-first">Tambah</button>
+                    
+                <input name="lampiran" type="text" class="form-control mb-3" id="exampleFormControlInput1"  value="{{ old('lampiran') }}" placeholder="Masukkan Lampiran">
+                <label for="exampleFormControlInput1" class="form-label">Tujuan</label>
+                <input name="tujuan" type="text" class="form-control mb-3" id="exampleFormControlInput1"  value="{{ old('tujuan') }}" placeholder="Masukkan Tujuan">
+                <label for="exampleFormControlInput1" class="form-label">Alamat</label>
+                <input name="alamat" type="text" class="form-control mb-3" id="exampleFormControlInput1"  value="{{ old('alamat') }}" placeholder="Masukkan Alamat">
+               
+        
+                <button type="submit" class="btn-first">Selanjutnya</button>
             </form>
-            
             </div>
         </div>
     </div>
@@ -106,6 +95,7 @@
             dataType: 'json',
             success: function(response) {
                 // Kosongkan opsi format surat saat ini
+                console.log(response);
                 $('#no_surat').empty();
 
                 // Tambahkan opsi format surat yang baru berdasarkan data dari server

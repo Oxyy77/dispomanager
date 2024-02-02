@@ -25,6 +25,7 @@
                         <th scope="col">No</th>
                         <th scope="col">Nomor Surat</th>
                         <th scope="col">Nama Surat</th>
+                        <th scope="col">Pengirim</th>
                         <th scope="col">Status</th>
                         <th scope="col">Aksi</th>
                       </tr>
@@ -37,24 +38,30 @@
                         <th scope="row">{{ $loop->iteration }}</th>
                         <td>{{ $item->no_surat }}</td>
                         <td> {{ $item->nama_surat }} </td>
+                        <td> {{ $item->pengirim }} </td>
                         <td> {{ $item->status_pengiriman }} </td>
                         <td>
-                          @if ($item->status_pengiriman != 'Selesai')
-                              <form action="{{ route('pengiriman.kirim', $item->id) }}" method="post">
-                                  @csrf
-                                  @method('put')
-                                  <button type="submit" class="btn-first" {{ $item->status_pengiriman == 'Dalam Pengiriman' ? 'disabled' : '' }}>Kirim</button>
-                              </form>
-                          @endif
+                          <form action="{{ route('pengiriman.kirim', $item->id) }}" method="post">
+                            @csrf
+                            @method('put')
+                            @if($item->status_pengiriman == 'Menunggu Dikirim')
+                                <button type="submit" class="btn-first">Kirim</button>
+                            @endif
+                        </form>
+                        
                       
                           <form action="{{ route('pengiriman.selesai', $item->id) }}" method="post">
-                              @csrf
-                              @method('put')
-                              <button type="submit" class="btn-second" {{ $item->status_pengiriman == 'Selesai' ? 'disabled' : '' }}>
-                                  Selesai
-                              </button>
-                          </form>
-                      </td>
+                            @csrf
+                            @method('put')
+                            @if($item->status_pengiriman == 'Dalam Pengiriman')
+                                <button type="submit" class="btn-first">Selesai</button>
+                            @elseif ($item->status_pengiriman == 'Menunggu Dikirim')
+                                <button type="button" class="btn-second" disabled>Selesai</button>
+                                @else
+                                <button type="button" class="btn-second" disabled>Selesai</button>
+                            @endif
+                        </form>
+                        
                       
                       
                       

@@ -10,6 +10,7 @@ use App\Models\Pengajuan;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\ValidationException;
 
 
 
@@ -37,21 +38,41 @@ class SekreFormatController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-{
-    $validatedData = $request->validate([
-        'kategori_surat' => 'required|max:255',
-        'format_surat' => 'required|unique:format',
-    ]);
-
-    // Menambahkan user_id berdasarkan pengguna yang saat ini terautentikasi
-   
-
-    // Tambahkan format ke basis data
-   $format = Format::create($validatedData);
-   $format->users()->attach(auth()->user()->id);
-
-    return redirect('/sekretaris/format-surat')->with('success', 'Format Surat Berhasil Ditambahkan');
-}
+    {
+        try {
+            $validatedData = $request->validate([
+                'kategori_surat' => 'required|max:255|unique:format',
+                'format_surat' => 'required|unique:format',
+            ]);
+    
+            // Mengambil nilai dari formulir
+            $kategoriSurat = $request->input('kategori_surat');
+            $formatSurat = $request->input('format_surat');
+            $additionalInfo = $request->input('hidden_additional_info');
+    
+            // Menggabungkan nilai format_surat dengan additionalInfo
+            $formatSuratWithAdditionalInfo = $formatSurat . $additionalInfo;
+    
+            // Menambahkan user_id berdasarkan pengguna yang saat ini terautentikasi
+    
+            // Tambahkan format ke basis data
+            $format = Format::create([
+                'kategori_surat' => $kategoriSurat,
+                'format_surat' => $formatSuratWithAdditionalInfo,
+            ]);
+    
+            $format->users()->attach(auth()->user()->id);
+    
+            return redirect('/sekretaris/format-surat')->with('success', 'Format Surat Berhasil Ditambahkan');
+        } catch (ValidationException $e) {
+            $errors = $e->validator->errors()->all();
+    
+            return back()
+            ->with('error', implode('<br>', $errors))
+            ->withInput();
+        
+        }
+    }
 
     
 

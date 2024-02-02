@@ -32,32 +32,22 @@
             });
         </script>        
     @endif
-    @if(session('error'))
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error!',
-                    html: '{!! session('error') !!}',
-                });
-        });
-    </script>
-    @endif
+    
     <div class="row">
         <div class="col-md-2">
             @include('partials.sidebar')
         </div>
         <div style="padding:3rem!important;" class="col-md-10">
             <div style="margin: 0" class="row mb-4 dashboard-header">
-                Format Surat
+                Kode Surat
             </div>
-            <a href="/tambah-format"> <button style="width: 100px" class="btn-first mb-4">Tambah Format</button></a>
+            <a href="/tambah-kode"> <button style="width: 100px" class="btn-first mb-4">Tambah Kode</button></a>
             <div style="margin: 0" class="row d-flex flex-column mb-4 w-100 p-3 tanda-tangan rounded">
                 <table id="tabelSemua" class="table table-secondary">
                     <thead>
                         <tr>
                             <th scope="col">No</th>
-                            <th scope="col">Format Surat</th>
+                            <th scope="col">Kode Surat</th>
                             <th scope="col">Kategori Surat</th>
                             <th scope="col">Aksi</th>
                         </tr>

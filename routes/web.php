@@ -14,7 +14,7 @@ use App\Http\Controllers\Direktur\DirekturController;
 use App\Http\Controllers\Direktur\FormatSuratController;
 use App\Http\Controllers\Direktur\TambahFormatController;
 use App\Http\Controllers\Sekretaris\SekretarisController;
-
+use Illuminate\Support\Facades\Storage;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -46,24 +46,22 @@ Route::middleware(['checkUserRole:direktur'])->group(function(){
     return view('direktur.tambah-surat');
     });
 
-    Route::get('/format-surat', [FormatSuratController::class, 'index']);
+    Route::get('/kode-surat', [FormatSuratController::class, 'index']);
 
-    Route::get('/tambah-format', function () {
-        return view('direktur.tambah-format');
+    Route::get('/tambah-kode', function () {
+        return view('direktur.tambah-kode');
     });
 
     Route::get('/surat-masuk', [DirekturController::class, 'suratMasuk']);
 
-    Route::get('/baca-surat', function () {
-        return view('direktur.baca-surat');
-    });
+    Route::get('/baca-surat/{id}', [SuratController::class, 'bacaSurat']);
+    Route::get('/storage/surat_masuk/{nama_file}', [SuratController::class, 'tampilkanSurat']);
+
 
     Route::get('/data-surat', [DirekturController::class, 'semuaSurat'] );
- 
-
     Route::resource('/format-surat/tambah', TambahFormatController::class);
     Route::resource('/tambah-surat/tambah', SuratController::class);
-    Route::patch('/updateStatus/{id}', [DirekturController::class, 'bacaSurat'])->name('updateSurat');
+    Route::put('/konfirmasi/{id}', [DirekturController::class, 'konfirmasi'])->name('konfirmasi');
 
 });
 
@@ -84,14 +82,35 @@ Route::middleware(['checkUserRole:sekretaris'])->group(function(){
     });
 
     Route::get('/sekretaris/surat-masuk', [SekretarisController::class, 'suratMasuk']);
-    Route::patch('/updateSekre/{id}', [SekretarisController::class, 'bacaSurat'])->name('updateSekre');
-
+    Route::put('/updateSekre/{id}', [SekretarisController::class, 'updateSekre'])->name('updateSekre');
+    Route::get('/sekretaris/kirim-surat', [SekretarisController::class, 'formkirimSurat']);
+    Route::post('/kirim-surat', [SekretarisController::class, 'kirimSurat'])->name('kirimSurat');
+    Route::get('/sekretaris/tambah-surat/v2', [SuratSekreController::class, 'buatSurat']);
 
     Route::get('/sekretaris/baca-surat', function () {
         return view('sekretaris.baca-surat');
     });
 
+    
+
     Route::get('/sekretaris/data-surat', [SekretarisController::class, 'semuaSurat']);
+
+
+    Route::get('/sekretaris/buat-surat/{id}', [SuratSekreController::class, 'showForm'])->name('form-surat');
+    Route::get('/sekretaris/form/buat-surat', [SuratSekreController::class, 'makeForm']);
+    Route::get('/sekretaris/form/buat-surat/step/2', [SuratSekreController::class, 'makeForm2']);
+    Route::get('/sekretaris/form/buat-surat/step/3', [SuratSekreController::class, 'makeForm3']);
+    Route::get('/sekretaris/form/buat-surat/step/4', [SuratSekreController::class, 'makeForm4']);
+    Route::post('/sekretaris/form/buat-surat/step/3', [SuratSekreController::class, 'createStep3'])->name('create.step3');
+    
+    Route::post('/sekretaris/form/buat-surat', [SuratSekreController::class, 'formSurat'])->name('step1');
+// routes/web.php
+
+    Route::post('/update-salam-pembuka', [SuratSekreController::class, 'step2'])->name('update.step2');
+    Route::post('/update-salam-penutup', [SuratSekreController::class, 'step4'])->name('update.step4');
+
+    Route::post('/submit-surat', [SuratSekreController::class, 'submitForm'])->name('submit-surat');
+
 });
 
 Route::middleware(['checkUserRole:kurir'])->group(function(){
@@ -113,3 +132,10 @@ Route::middleware(['checkUserRole:kurir'])->group(function(){
     Route::put('/pengiriman/{id}/keluar-selesai', [PengirimanController::class, 'keluarSelesai'])->name('pengiriman.selesaiKeluar');
 
 });
+
+Route::get('/test', function () {
+    return view('test');
+});
+
+
+

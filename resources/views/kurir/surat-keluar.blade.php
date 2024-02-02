@@ -40,13 +40,19 @@
                           <form action="{{ route('pengiriman.kirimKeluar', $item->id) }}" method="post">
                               @csrf
                               @method('put')
-                              <button type="submit" class="btn-first">Kirim</button>
+                             @if ($item->status_pengiriman == 'Menunggu Dikirim')
+                             <button type="submit" class="btn-first">Kirim</button>
+                             @endif
                           </form>
           
                           <form action="{{ route('pengiriman.selesaiKeluar', $item->id) }}" method="post">
                               @csrf
                               @method('put')
-                              <button type="submit" class="btn-second">Selesai</button>
+                            @if ($item->status_pengiriman == 'Dalam Pengiriman')
+                            <button type="submit" class="btn-first">Selesai</button>
+                            @else
+                            <button type="submit" class="btn-second" disabled>Selesai</button>
+                            @endif
                           </form>
                       </td>
                       </tr>
